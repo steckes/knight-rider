@@ -58,6 +58,9 @@ wget https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/matcha-i
 wget https://github.com/k2-fsa/sherpa-onnx/releases/download/vocoder-models/hifigan_v2.onnx
 tar xvf matcha-icefall-en_US-ljspeech.tar.bz2
 rm matcha-icefall-en_US-ljspeech.tar.bz2
+# Gemma 3
+wget https://huggingface.co/onnx-community/gemma-3-1b-it-ONNX/resolve/main/onnx/model_quantized.onnx
+wget https://huggingface.co/onnx-community/gemma-3-1b-it-ONNX/resolve/main/tokenizer.json
 ```
 
 If you want to use Kitten as a speech model download this instead of Matcha:
@@ -67,25 +70,6 @@ If you want to use Kitten as a speech model download this instead of Matcha:
 wget https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kitten-nano-en-v0_2-fp16.tar.bz2
 tar xf kitten-nano-en-v0_2-fp16.tar.bz2
 rm kitten-nano-en-v0_2-fp16.tar.bz2
-```
-
-### Build Llama Server
-
-```sh
-git clone https://github.com/ggml-org/llama.cpp
-cd llama.cpp
-cmake -B build
-cmake --build build --config Release -j
-```
-
-### Start the Llama Server
-
-This will download the Gemma 3 270m model on the first run which has nearly 300 MB.
-Feel free to run here any model you want, for example `ggml-org/gemma-3-1b-it-GGUF` which is much better, but the answer will be a little slow on the Raspberry Pi.
-
-```sh
-# in the llama.cpp folder
-./build/bin/llama-server -hf ggml-org/gemma-3-270m-it-GGUF -c 0 -fa
 ```
 
 ### Run the code in this repository

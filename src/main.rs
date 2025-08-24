@@ -1,15 +1,13 @@
 use std::error::Error;
 
-use llama::BlockingLlama;
-
 use crate::{
+    gemma::Gemma,
     speech_to_text::{SpeechToText, Vad},
     system_audio::{AudioConfig, SystemAudio},
     text_to_speech::TextToSpeech,
 };
 
 mod gemma;
-mod llama;
 mod speech_to_text;
 mod system_audio;
 mod text_to_speech;
@@ -34,14 +32,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut stt = SpeechToText::new(vad_sample_rate)?;
     let mut tts = TextToSpeech::new_matcha(tts_sample_rate);
 
-    // LlamaClient to talk to LlamaServer
-    let mut llama = match BlockingLlama::new() {
-        Ok(llama) => llama,
-        Err(_) => {
-            eprintln!("Make sure `llama-server` is running and start again!");
-            return Ok(());
-        }
-    };
+    let mut gemma = Gemma::new()?;
 
     println!("K.I.T.T. is ready for your requests..");
 
@@ -61,7 +52,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 if !transcript.is_empty() {
                     println!("User: {}", &transcript);
 
-                    let answer = match llama.chat(&transcript) {
+                    let answer = match gemma.chat(&transcript) {
                         Ok(anwser) => anwser,
                         Err(_) => {
                             eprintln!("Error: Llama failed to produce an answer...");

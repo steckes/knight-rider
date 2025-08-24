@@ -25,20 +25,20 @@ pub struct Gemma {
 
 impl Gemma {
     pub fn new() -> ort::Result<Self> {
-        let model_path = "./gemma-3-1b-it-ONNX/onnx/model.onnx";
+        let model_path = "./model_q4.onnx";
         let session = Session::builder()?
             .with_optimization_level(GraphOptimizationLevel::Level3)?
             .commit_from_file(model_path)?;
 
         // Load tokenizer
-        let tokenizer_path = "./gemma-3-1b-it-ONNX/tokenizer.json";
+        let tokenizer_path = "./tokenizer.json";
         let tokenizer = Tokenizer::from_file(Path::new(tokenizer_path))
             .map_err(|e| ort::Error::new(format!("Failed to load tokenizer: {}", e)))?;
 
         Ok(Self { session, tokenizer })
     }
 
-    pub fn generate(&mut self, prompt: &str) -> ort::Result<String> {
+    pub fn chat(&mut self, prompt: &str) -> ort::Result<String> {
         // Create chat messages (simulating the chat template)
 
         let system_msg = "Please answer in exactly one short sentence.";
