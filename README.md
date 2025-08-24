@@ -5,10 +5,10 @@ It provides reference code that allows you to have voice conversations with an L
 
 It uses the following AI models to achieve the result:
 
-- SileroVAD: Detects if voice is in the input audio [(Link)](https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx)
-- Moonshine STT: Converts speech into text [(Link)](https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-moonshine-tiny-en-int8.tar.bz2)
-- Gemma 3 LLM: The large language model, creating an answer text to an input text [(Link)](https://huggingface.co/ggml-org/gemma-3-270m-it-GGUF/blob/main/gemma-3-270m-it-Q8_0.gguf)
-- Matcha TTS: Converts text to speech [(Link)](https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/matcha-icefall-en_US-ljspeech.tar.bz2)
+- SileroVAD: Detects if voice is in the input audio [(Link)](https://github.com/Sahl-AI/silero-vad)
+- Moonshine STT: Converts speech into text [(Link)](https://github.com/moonshine-ai/moonshine)
+- Gemma 3 270M LLM: The large language model, creating an answer text to an input text [(Link)](https://huggingface.co/google/gemma-3-270m)
+- Matcha TTS: Converts text to speech [(Link)](https://github.com/ulutsoftlls/matchaTTS)
 
 ## Prerequisites
 
