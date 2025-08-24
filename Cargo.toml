@@ -1,0 +1,21 @@
+[package]
+name = "knight-rider"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ringbuf = "0.4.8"
+rtaudio = { version = "0.3.5", default-features = false, features = [
+    "alsa",
+    "coreaudio",
+    "wasapi",
+] }
+rubato = "0.16.2"
+sherpa-rs = { git = "https://github.com/steckes/sherpa-rs", rev = "78e471c274f8c62f2f006f6bcb51cfedcb7a8d30" }
+ndarray = "0.16.1"
+tokenizers = "0.21.4"
+reqwest = { version = "0.12.23", features = ["json", "stream"] }
+serde_json = "1.0.143"
+tokio = { version = "1.0", features = ["full"] }
+futures-util = "0.3"
+thiserror = "2.0.16"

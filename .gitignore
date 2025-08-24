@@ -1,0 +1,5 @@
+/target
+/*.onnx
+/matcha-icefall-en_US-ljspeech
+/sherpa-onnx-moonshine-tiny-en-int8
+/kitten-nano-en-v0_2-fp16
