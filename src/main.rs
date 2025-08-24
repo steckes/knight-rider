@@ -8,6 +8,7 @@ use crate::{
     text_to_speech::TextToSpeech,
 };
 
+mod gemma;
 mod llama;
 mod speech_to_text;
 mod system_audio;
