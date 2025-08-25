@@ -41,7 +41,7 @@ cd ~/knight-rider
 - Install Linux dependencies and set up Raspberry Pi Codec Zero (steps taken from [this guide](https://www.raspberrypi.com/documentation/accessories/audio.html#configuration)):
 
 ```sh
-sudo ./rpi-configs/install.sh
+sudo ./rpi-config/install.sh
 sudo reboot now
 ```
 

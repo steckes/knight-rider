@@ -1,0 +1,20 @@
+#!/bin/sh
+exec >>/var/log/rc.local.log 2>&1
+set -eux
+
+# Find the repo and its owner
+KR_DIR="$(find /home -maxdepth 2 -type d -name knight-rider 2>/dev/null | head -n1 || true)"
+[ -z "$KR_DIR" ] && { echo "knight-rider dir not found under /home"; exit 0; }
+KR_USER="$(stat -c '%U' "$KR_DIR")"
+
+[ -f "$KR_DIR/rpi-config/alsa-config.state" ] && alsactl restore -f "$KR_DIR/rpi-config/alsa-config.state" || true
+
+USER_CMD='
+set -eux
+export XDG_CACHE_HOME="$HOME/.cache"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env" || PATH="$PATH:$HOME/.cargo/bin"
+exec "'"$KR_DIR"'/start.sh"
+'
+
+su - "$KR_USER" -c "setsid nohup bash -lc '$USER_CMD' >>'$KR_DIR/start.log' 2>&1 &"
+exit 0
