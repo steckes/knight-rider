@@ -49,24 +49,37 @@ Make sure you downloaded all necessary models:
 ```sh
 # Silero VAD
 wget https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx
-# Moonshine
+```
+
+Choose your Speech to Text Model:
+
+```sh
+# Moonshine (Default)
 wget https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-moonshine-tiny-en-int8.tar.bz2
 tar xvf sherpa-onnx-moonshine-tiny-en-int8.tar.bz2
 rm sherpa-onnx-moonshine-tiny-en-int8.tar.bz2
-# Matcha
+# Whisper
+wget https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-whisper-tiny.tar.bz2
+tar xvf sherpa-onnx-whisper-tiny.tar.bz2
+rm sherpa-onnx-whisper-tiny.tar.bz2
+```
+
+Choose your Text to Speech Model:
+
+```sh
+# Matcha(Default)
 wget https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/matcha-icefall-en_US-ljspeech.tar.bz2
 wget https://github.com/k2-fsa/sherpa-onnx/releases/download/vocoder-models/hifigan_v2.onnx
 tar xvf matcha-icefall-en_US-ljspeech.tar.bz2
 rm matcha-icefall-en_US-ljspeech.tar.bz2
-```
-
-If you want to use Kitten as a speech model download this instead of Matcha:
-
-```sh
 # Kitten
 wget https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kitten-nano-en-v0_2-fp16.tar.bz2
 tar xf kitten-nano-en-v0_2-fp16.tar.bz2
 rm kitten-nano-en-v0_2-fp16.tar.bz2
+# Kokoro
+wget https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kokoro-multi-lang-v1_0.tar.bz2
+tar xf kokoro-multi-lang-v1_0.tar.bz2
+rm kokoro-multi-lang-v1_0.tar.bz2
 ```
 
 ### Build Llama Server

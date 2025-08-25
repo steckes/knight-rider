@@ -3,6 +3,7 @@ use std::error::Error;
 use sherpa_rs::{
     moonshine::{MoonshineConfig, MoonshineRecognizer},
     silero_vad::{SileroVad, SileroVadConfig},
+    whisper::{WhisperConfig, WhisperRecognizer},
 };
 
 pub struct Vad {
@@ -48,13 +49,15 @@ impl Vad {
     }
 }
 
-pub struct SpeechToText {
-    stt: MoonshineRecognizer,
-    sample_rate: u32,
+#[allow(unused)]
+pub enum SpeechToText {
+    Moonshine(MoonshineRecognizer, u32),
+    Whisper(WhisperRecognizer, u32),
 }
 
+#[allow(unused)]
 impl SpeechToText {
-    pub fn new(sample_rate: u32) -> Result<Self, Box<dyn Error>> {
+    pub fn new_moonshine(sample_rate: u32) -> Result<Self, Box<dyn Error>> {
         // Speech To Text
         let config = MoonshineConfig {
             preprocessor: "./sherpa-onnx-moonshine-tiny-en-int8/preprocess.onnx".into(),
@@ -67,10 +70,30 @@ impl SpeechToText {
             ..Default::default()
         };
         let stt = MoonshineRecognizer::new(config)?;
-        Ok(Self { stt, sample_rate })
+        Ok(SpeechToText::Moonshine(stt, sample_rate))
+    }
+
+    pub fn new_whisper(sample_rate: u32) -> Result<Self, Box<dyn Error>> {
+        // Speech To Text
+        let config = WhisperConfig {
+            decoder: "sherpa-onnx-whisper-tiny/tiny-decoder.onnx".into(),
+            encoder: "sherpa-onnx-whisper-tiny/tiny-encoder.onnx".into(),
+            tokens: "sherpa-onnx-whisper-tiny/tiny-tokens.txt".into(),
+            language: "en".into(),
+            ..Default::default()
+        };
+        let stt = WhisperRecognizer::new(config)?;
+        Ok(SpeechToText::Whisper(stt, sample_rate))
     }
 
     pub fn transcribe(&mut self, audio: &[f32]) -> String {
-        self.stt.transcribe(self.sample_rate, audio).text
+        match self {
+            SpeechToText::Moonshine(moonshine_recognizer, sr) => {
+                moonshine_recognizer.transcribe(*sr, audio).text
+            }
+            SpeechToText::Whisper(whisper_recognizer, sr) => {
+                whisper_recognizer.transcribe(*sr, audio).text
+            }
+        }
     }
 }

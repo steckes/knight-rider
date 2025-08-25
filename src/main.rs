@@ -30,8 +30,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut system_audio = SystemAudio::new(audio_config)?;
 
     let mut vad = Vad::new(vad_sample_rate)?;
-    let mut stt = SpeechToText::new(vad_sample_rate)?;
-    let mut tts = TextToSpeech::new_matcha(tts_sample_rate);
+    let mut stt = SpeechToText::new_moonshine(vad_sample_rate)?;
+    let mut tts = TextToSpeech::new_matcha(tts_sample_rate, 0);
 
     // LlamaClient to talk to LlamaServer
     let mut llama = match BlockingLlama::new() {
