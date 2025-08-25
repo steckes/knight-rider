@@ -33,6 +33,7 @@ What you need to recreate the demo:
 - SSH into the RPi and download this repo
 
 ```sh
+sudo apt install git
 git clone https://github.com/steckes/knight-rider.git ~/knight-rider
 cd ~/knight-rider
 ```
@@ -41,9 +42,10 @@ cd ~/knight-rider
 
 ```sh
 sudo ./rpi-configs/install.sh
+sudo reboot now
 ```
 
-## Build and Run
+## Build
 
 ### Download Models
 
@@ -85,31 +87,35 @@ tar xf kokoro-multi-lang-v1_0.tar.bz2
 rm kokoro-multi-lang-v1_0.tar.bz2
 ```
 
+Choose your LLM:
+
+```sh
+# Gemma 3 270M (fast, but not super smart)
+wget https://huggingface.co/ggml-org/gemma-3-270m-it-GGUF/resolve/main/gemma-3-270m-it-Q8_0.gguf?download=true
+# Gemma 3 1B (slow, but good quality)
+wget https://huggingface.co/ggml-org/gemma-3-1b-it-GGUF/resolve/main/gemma-3-1b-it-Q4_K_M.gguf?download=true
+```
+
 ### Build Llama Server
 
 ```sh
 git clone https://github.com/ggml-org/llama.cpp ~/llama.cpp
 cd ~/llama.cpp
 cmake -B build
-cmake --build build --config Release -j
+cmake --build build --target llama-server --config Release -j
 ```
 
-### Start the Llama Server
+## Run
 
-This will download the Gemma 3 270m model on the first run which has nearly 300 MB.
-Feel free to run here any model you want, for example `ggml-org/gemma-3-1b-it-GGUF` which is much better, but the answer will be a little slow on the Raspberry Pi.
-Beware that the final `&` will start the server as a background process, so you still can compile the knight-rider part.
-If you want to kill this process run `pkill llama-server`. You can also start it from a second ssh session, to have both outputs separate.
+### Autostart
 
-```sh
-~/llama.cpp/build/bin/llama-server -hf ggml-org/gemma-3-270m-it-GGUF -c 0 -fa &
-```
+The install script `rpi-config/install.sh` will configure `/etc/rc.local` which will automatically run the `start.sh` script at startup.
+Modify the `start.sh` script if you want to load a different LLM.
 
-### Run the code in this repository
+### Run manually
 
 ```sh
-cd ~/knight-rider
-cargo run --release
+~/knight-rider/start.sh
 ```
 
 ## Errors?

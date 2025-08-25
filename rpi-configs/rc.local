@@ -1,16 +1,21 @@
 #!/bin/sh
-#
-# rc.local
-#
-# This script is executed at the end of each multiuser runlevel.
-# Make sure that the script will "exit 0" on success or any other
-# value on error.
-#
-# In order to enable or disable this script just change the execution
-# bits.
-#
-# By default this script does nothing.
 
-sudo alsactl restore -f /home/pi/knight-rider/rpi-configs/codec-config.state
+# Log everything
+exec >>/var/log/rc.local.log 2>&1
+set -eux
+
+# Wait a bit for devices/network (tune as needed)
+sleep 5
+
+# Restore ALSA (no sudo; we're root)
+alsactl restore -f /home/pi/knight-rider/rpi-configs/codec-config.state || true
+
+# Run your startup as user 'pi' with the right env & PATH
+export HOME=/home/pi
+export XDG_CACHE_HOME=/home/pi/.cache
+export PATH="/usr/local/bin:/usr/bin:/bin:/home/pi/.cargo/bin"
+
+# Use 'su - pi -c' to get user session env; nohup/setsid to detach from rc-local cgroup
+su - pi -c "setsid nohup /home/pi/knight-rider/start.sh >>/home/pi/knight-rider/start.log 2>&1 &"
 
 exit 0
