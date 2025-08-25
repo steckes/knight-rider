@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Update system packages
-sudo apt update && sudo apt upgrade -y
+sudo apt update
 
 # Install build dependencies
 sudo apt install -y build-essential clang pkg-config git cmake libssl-dev libasound2-dev libcurl4-openssl-dev
