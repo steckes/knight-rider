@@ -1,4 +1,4 @@
-# Knight-Rider
+# Knight Rider
 
 <img src="img/pic1.jpg" alt="Knight Rider Demo" width="400"> <img src="img/pic2.jpg" alt="Raspberry Pi Setup" width="400">
 
