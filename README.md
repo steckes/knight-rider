@@ -51,7 +51,8 @@ Make sure you downloaded all necessary models inside of the `knight-rider` folde
 
 ```sh
 # Silero VAD
-wget https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx ```
+wget https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx
+```
 
 Choose your Speech to Text Model:
 
