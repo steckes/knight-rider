@@ -1,5 +1,7 @@
 # Knight-Rider
 
+<img src="img/pic1.jpg" alt="Knight Rider Demo" width="400"> <img src="img/pic2.jpg" alt="Raspberry Pi Setup" width="400">
+
 This is the code for a workshop that was given at RustConf 2025 in Seattle with the name "Rust at The Edge: AI Development, Edge Deployment, Real World Inference".
 It provides reference code that allows you to have voice conversations with an LLM.
 
@@ -7,7 +9,7 @@ It uses the following AI models to achieve the result:
 
 - SileroVAD: Detects if voice is in the input audio [(Link)](https://github.com/Sahl-AI/silero-vad)
 - Moonshine STT: Converts speech into text [(Link)](https://github.com/moonshine-ai/moonshine)
-- Gemma 3 270M LLM: The large language model, creating an answer text to an input text [(Link)](https://huggingface.co/google/gemma-3-270m)
+- Gemma 3 270M LLM: The large language model [(Link)](https://huggingface.co/google/gemma-3-270m)
 - Matcha TTS: Converts text to speech [(Link)](https://github.com/ulutsoftlls/matchaTTS)
 
 ## Prerequisites
@@ -18,39 +20,27 @@ This example was meant to run on a Raspberry Pi, although it should run on any d
 
 What you need to recreate the demo:
 
-- Raspberry Pi 5 8GB
-- Codec HAT with Microphone and Speaker Output ([Raspberry Pi Codec Zero](https://www.raspberrypi.com/products/codec-zero/).
+- Raspberry Pi 5 4 or 8GB (depending on which LLM you want to run)
+- Codec HAT with Microphone and Speaker Output ([Raspberry Pi Codec Zero](https://www.raspberrypi.com/products/codec-zero/)).
 - Mini speakers (eg. [CQRobot Miniature Speakers](https://www.cqrobot.com/index.php?route=product/product&product_id=1465))
 - SD-Card with 16 GB capacity
-- KnightRider Playmobil Car
+- Optional: [Knight Rider - K.I.T.T. Playmobil Car](https://www.playmobil.com/knight-rider---k.i.t.t./70924.html) or any other Knight Rider model where the Raspi fits inside.
 
 ### Software Prerequisites
 
 - If you are using the Raspberry Pi, set up the SD card with Raspberry Pi OS Lite (64-bit) according to [this guide](https://www.raspberrypi.com/documentation/computers/getting-started.html) and make sure you allowed SSH in the Rasperry Pi Imager.
 
-- SSH into the RPi and install the linux dependencies
-
-```sh
-sudo apt update && sudo apt upgrade
-# build dependencies
-sudo apt install -y build-essential clang pkg-config git cmake libssl-dev libasound2-dev libcurl4-openssl-dev
-# Rust toolchain
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
-```
-
-- Download this repo
+- SSH into the RPi and download this repo
 
 ```sh
 git clone https://github.com/steckes/knight-rider.git ~/knight-rider
 cd ~/knight-rider
 ```
 
-- Setup the Raspberry Pi Codec Zero by copying those files (steps taken from [this guide](https://www.raspberrypi.com/documentation/accessories/audio.html#configuration)):
+- Install Linux dependencies and set up Raspberry Pi Codec Zero (steps taken from [this guide](https://www.raspberrypi.com/documentation/accessories/audio.html#configuration)):
 
 ```sh
-sudo cp /home/pi/knight-rider/rpi-configs/config.txt /boot/firmware/config.txt
-sudo cp /home/pi/knight-rider/rpi-configs/rc.local /etc/rc.local
-sudo chmod +x /etc/rc.local
+sudo ./rpi-configs/install.sh
 ```
 
 ## Build and Run
