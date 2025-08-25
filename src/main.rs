@@ -33,14 +33,19 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut stt = SpeechToText::new_moonshine(vad_sample_rate)?;
     let mut tts = TextToSpeech::new_matcha(tts_sample_rate, 0);
 
-    // LlamaClient to talk to LlamaServer
-    let mut llama = match BlockingLlama::new() {
-        Ok(llama) => llama,
-        Err(_) => {
-            eprintln!("Make sure `llama-server` is running and start again!");
-            return Ok(());
-        }
-    };
+    let mut llama: BlockingLlama;
+    loop {
+        match BlockingLlama::new() {
+            Ok(bl) => {
+                llama = bl;
+                break;
+            }
+            Err(_) => {
+                eprintln!("Make sure `llama-server` is running...");
+                std::thread::sleep(std::time::Duration::from_secs(1));
+            }
+        };
+    }
 
     println!("K.I.T.T. is ready for your requests..");
 
