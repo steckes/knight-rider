@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Update system packages
-sudo apt update && sudo apt upgrade
+sudo apt update && sudo apt upgrade -y
 
 # Install build dependencies
 sudo apt install -y build-essential clang pkg-config git cmake libssl-dev libasound2-dev libcurl4-openssl-dev
@@ -15,3 +15,7 @@ sudo cp /home/pi/knight-rider/rpi-configs/rc.local /etc/rc.local
 
 # Make rc.local executable
 sudo chmod +x /etc/rc.local
+
+# Enable and start rc-local service
+sudo systemctl enable rc-local
+sudo systemctl start rc-local
