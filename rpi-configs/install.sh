@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Update system packages
+# Update package list
 sudo apt update
 
 # Install build dependencies
