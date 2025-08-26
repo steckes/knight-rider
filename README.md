@@ -112,8 +112,8 @@ cmake --build build --target llama-server --config Release -j
 
 ### Autostart
 
-The install script `rpi-config/install.sh` will configure `/etc/rc.local` which will automatically run the `start.sh` script at startup.
-Modify the `start.sh` script if you want to load a different LLM.
+The install script `rpi-config/install.sh` will configure `/etc/rc.local` which will automatically run the `rpi-config/start.sh` script at startup.
+Modify the `rpi-config/start.sh` script if you want to load a different LLM.
 
 ### Run manually
 
@@ -132,8 +132,9 @@ To stop the background processes run:
 If you downloaded the folders into different paths you can still run it manually:
 
 ```sh
-/path/to/llama-server -m /path/to/knight-rider/gemma-3-270m-it-Q8_0.gguf -c 0 -fa --offline
-cd /path/to/knight-rider && cargo run --release
+/path/to/llama-server -m /path/to/gemma-3-270m-it-Q8_0.gguf -c 0 -fa
+# in this folder run
+cargo run --release
 ```
 
 ## Errors?

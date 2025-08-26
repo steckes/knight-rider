@@ -14,6 +14,7 @@ mod system_audio;
 mod text_to_speech;
 
 fn main() -> Result<(), Box<dyn Error>> {
+    // If you want to select your device type, comment out the following
     // system_audio::list_device_names();
 
     let vad_sample_rate = 16000;
@@ -43,6 +44,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     };
 
     println!("K.I.T.T. is ready for your requests..");
+    let generated_speech = tts.create("All systems ready!");
+    system_audio.send_audio(&generated_speech);
 
     // AI Loop
     loop {
