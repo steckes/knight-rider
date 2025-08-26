@@ -18,15 +18,16 @@ It uses the following AI models to achieve the result:
 
 ### Hardware Prerequisites
 
-This example was meant to run on a Raspberry Pi, although it should run on any desktop as well.
+This example was meant to run on a Raspberry Pi 5, although it should run on any other computer as well.
 
 What you need to recreate the demo:
 
 - Raspberry Pi 5 4 or 8GB (depending on which LLM you want to run)
-- Codec HAT with Microphone and Speaker Output ([Raspberry Pi Codec Zero](https://www.raspberrypi.com/products/codec-zero/)).
+- Codec HAT with Microphone and Speaker Output ([Raspberry Pi Codec Zero](https://www.raspberrypi.com/products/codec-zero/))
 - Mini speakers (eg. [CQRobot Miniature Speakers](https://www.cqrobot.com/index.php?route=product/product&product_id=1465))
 - SD-Card with 16 GB capacity
-- Optional: [Knight Rider - K.I.T.T. Playmobil Car](https://www.playmobil.com/knight-rider---k.i.t.t./70924.html) or any other Knight Rider model where the Raspi fits inside.
+- Optional: [Knight Rider - K.I.T.T. Playmobil Car](https://www.playmobil.com/knight-rider---k.i.t.t./70924.html) or any other Knight Rider model where the Raspi fits inside
+- Optional: Power bank, so you can carry the car around
 
 ### Software Prerequisites
 
@@ -116,8 +117,23 @@ Modify the `start.sh` script if you want to load a different LLM.
 
 ### Run manually
 
+On the Raspberry Pi just use this script to start the two processes in the background:
+
 ```sh
-~/knight-rider/start.sh
+~/knight-rider/rpi-config/start.sh
+```
+
+To stop the background processes run:
+
+```sh
+~/knight-rider/rpi-config/stop.sh
+```
+
+If you downloaded the folders into different paths you can still run it manually:
+
+```sh
+/path/to/llama-server -m /path/to/knight-rider/gemma-3-270m-it-Q8_0.gguf -c 0 -fa --offline
+cd /path/to/knight-rider && cargo run --release
 ```
 
 ## Errors?

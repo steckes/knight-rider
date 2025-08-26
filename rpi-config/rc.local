@@ -13,7 +13,7 @@ USER_CMD='
 set -eux
 export XDG_CACHE_HOME="$HOME/.cache"
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env" || PATH="$PATH:$HOME/.cargo/bin"
-exec "'"$KR_DIR"'/start.sh"
+exec "'"$KR_DIR"'/rpi-config/start.sh"
 '
 
 su - "$KR_USER" -c "setsid nohup bash -lc '$USER_CMD' >>'$KR_DIR/start.log' 2>&1 &"
