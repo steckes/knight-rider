@@ -15,24 +15,23 @@ mod text_to_speech;
 
 fn main() -> Result<(), Box<dyn Error>> {
     // If you want to select your device type, comment out the following
-    // system_audio::list_device_names();
+    system_audio::list_device_names();
 
-    let vad_sample_rate = 16000;
-    let tts_sample_rate = 22050;
+    // Choose which models you want to use
+    let mut vad = Vad::new()?;
+    let mut stt = SpeechToText::new_moonshine()?;
+    let mut tts = TextToSpeech::new_matcha(0);
+
     let audio_config = AudioConfig {
         input_device: None,  // None = default
         output_device: None, // None = default
         system_sample_rate: 48000,
-        vad_sample_rate,
-        generated_speech_sample_rate: tts_sample_rate,
         num_frames: 512,
+        vad_sample_rate: vad.sample_rate(),
+        tts_sample_rate: tts.sample_rate(),
     };
 
     let mut system_audio = SystemAudio::new(audio_config)?;
-
-    let mut vad = Vad::new(vad_sample_rate)?;
-    let mut stt = SpeechToText::new_moonshine(vad_sample_rate)?;
-    let mut tts = TextToSpeech::new_matcha(tts_sample_rate, 0);
 
     // Start Llama Client
     let mut llama = match BlockingLlama::new() {
@@ -43,11 +42,12 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     };
 
+    // Say something so we know the system is ready
     println!("K.I.T.T. is ready for your requests..");
     let generated_speech = tts.create("All systems ready!");
     system_audio.send_audio(&generated_speech);
 
-    // AI Loop
+    // Main AI Loop
     loop {
         if system_audio.num_samples_available() >= vad.window_size() {
             let input_audio = system_audio.receive_audio(vad.window_size());
@@ -74,7 +74,12 @@ fn main() -> Result<(), Box<dyn Error>> {
 
                     println!("KITT: {}", &answer);
 
-                    let generated_speech = tts.create(&answer);
+                    if answer.len() > 200 {
+                        println!("Answer too long, cutting off: {}", &answer[200..])
+                    }
+
+                    // Limit the prompt so it does not take too long to generate the speech
+                    let generated_speech = tts.create(&answer[..200]);
                     system_audio.send_audio(&generated_speech);
                 }
                 vad.delete_speech_segment();

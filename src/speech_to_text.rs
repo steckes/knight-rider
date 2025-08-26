@@ -9,10 +9,12 @@ use sherpa_rs::{
 pub struct Vad {
     vad: SileroVad,
     window_size: usize,
+    sample_rate: u32,
 }
 
 impl Vad {
-    pub fn new(sample_rate: u32) -> Result<Self, Box<dyn Error>> {
+    pub fn new() -> Result<Self, Box<dyn Error>> {
+        let sample_rate = 16000;
         let window_size = 512;
         let vad_config = SileroVadConfig {
             model: "silero_vad.onnx".into(),
@@ -25,11 +27,11 @@ impl Vad {
             ..Default::default()
         };
         let vad = SileroVad::new(vad_config, 10.0)?;
-        Ok(Self { vad, window_size })
-    }
-
-    pub fn window_size(&self) -> usize {
-        self.window_size
+        Ok(Self {
+            vad,
+            window_size,
+            sample_rate,
+        })
     }
 
     pub fn process_audio(&mut self, audio: Vec<f32>) {
@@ -47,17 +49,25 @@ impl Vad {
     pub fn delete_speech_segment(&mut self) {
         self.vad.pop();
     }
+
+    pub fn sample_rate(&self) -> u32 {
+        self.sample_rate
+    }
+
+    pub fn window_size(&self) -> usize {
+        self.window_size
+    }
 }
 
 #[allow(unused)]
 pub enum SpeechToText {
-    Moonshine(MoonshineRecognizer, u32),
-    Whisper(WhisperRecognizer, u32),
+    Moonshine(MoonshineRecognizer),
+    Whisper(WhisperRecognizer),
 }
 
 #[allow(unused)]
 impl SpeechToText {
-    pub fn new_moonshine(sample_rate: u32) -> Result<Self, Box<dyn Error>> {
+    pub fn new_moonshine() -> Result<Self, Box<dyn Error>> {
         // Speech To Text
         let config = MoonshineConfig {
             preprocessor: "./sherpa-onnx-moonshine-tiny-en-int8/preprocess.onnx".into(),
@@ -70,7 +80,7 @@ impl SpeechToText {
             ..Default::default()
         };
         let stt = MoonshineRecognizer::new(config)?;
-        Ok(SpeechToText::Moonshine(stt, sample_rate))
+        Ok(SpeechToText::Moonshine(stt))
     }
 
     pub fn new_whisper(sample_rate: u32) -> Result<Self, Box<dyn Error>> {
@@ -83,16 +93,16 @@ impl SpeechToText {
             ..Default::default()
         };
         let stt = WhisperRecognizer::new(config)?;
-        Ok(SpeechToText::Whisper(stt, sample_rate))
+        Ok(SpeechToText::Whisper(stt))
     }
 
     pub fn transcribe(&mut self, audio: &[f32]) -> String {
         match self {
-            SpeechToText::Moonshine(moonshine_recognizer, sr) => {
-                moonshine_recognizer.transcribe(*sr, audio).text
+            SpeechToText::Moonshine(moonshine_recognizer) => {
+                moonshine_recognizer.transcribe(16000, audio).text
             }
-            SpeechToText::Whisper(whisper_recognizer, sr) => {
-                whisper_recognizer.transcribe(*sr, audio).text
+            SpeechToText::Whisper(whisper_recognizer) => {
+                whisper_recognizer.transcribe(16000, audio).text
             }
         }
     }

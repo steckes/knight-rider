@@ -85,9 +85,9 @@ wget https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kitten-n
 tar xf kitten-nano-en-v0_2-fp16.tar.bz2
 rm kitten-nano-en-v0_2-fp16.tar.bz2
 # or Kokoro
-wget https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kokoro-multi-lang-v1_0.tar.bz2
-tar xf kokoro-multi-lang-v1_0.tar.bz2
-rm kokoro-multi-lang-v1_0.tar.bz2
+wget https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kokoro-en-v0_19.tar.bz2
+tar xf kokoro-en-v0_19.tar.bz2
+rm kokoro-en-v0_19.tar.bz2
 ```
 
 Choose your LLM:

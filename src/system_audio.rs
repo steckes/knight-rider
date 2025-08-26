@@ -30,9 +30,9 @@ pub struct AudioConfig {
     pub output_device: Option<String>,
     pub input_device: Option<String>,
     pub system_sample_rate: u32,
-    pub vad_sample_rate: u32,
-    pub generated_speech_sample_rate: u32,
     pub num_frames: usize,
+    pub vad_sample_rate: u32,
+    pub tts_sample_rate: u32,
 }
 
 pub struct SystemAudio {
@@ -79,7 +79,7 @@ impl SystemAudio {
 
         // Construct the resampler that resamples the generated speech to the system sample rate
         let mut output_resampler = FftFixedOut::new(
-            config.generated_speech_sample_rate as usize,
+            config.tts_sample_rate as usize,
             config.system_sample_rate as usize,
             config.num_frames,
             1,
@@ -163,7 +163,7 @@ impl SystemAudio {
             },
         )?;
 
-        Ok(SystemAudio {
+        Ok(Self {
             stream_handle,
             input_consumer,
             output_producer,
