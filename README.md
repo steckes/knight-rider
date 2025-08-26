@@ -143,3 +143,7 @@ cargo run --release
 
 In case your audio device is not detected or it is not starting, set the exact input / output device name of you soundcard right at the start of the `main.rs` file.
 To see the exact names of the devices you can list them by commenting out the first line in the main function (`list_device_names`).
+
+### K.I.T.T. does not start when booting the Pi
+
+Check the logs at `~/knight-rider/start.log` or `/var/log/rc.local.log`.

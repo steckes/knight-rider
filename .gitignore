@@ -5,3 +5,5 @@
 /kitten-nano-en-v0_2-fp16
 /kokoro-multi-lang-v1_0
 /sherpa-onnx-whisper-tiny
+/*.gguf
+/*.log
