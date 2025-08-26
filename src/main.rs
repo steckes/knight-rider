@@ -63,7 +63,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 if !transcript.is_empty() {
                     println!("User: {}", &transcript);
 
-                    let answer = match llama.chat(&transcript) {
+                    let mut answer = match llama.chat(&transcript) {
                         Ok(anwser) => anwser,
                         Err(_) => {
                             eprintln!("Error: Llama failed to produce an answer...");
@@ -74,12 +74,13 @@ fn main() -> Result<(), Box<dyn Error>> {
 
                     println!("KITT: {}", &answer);
 
+                    // Limit the prompt so it does not take too long to generate the speech
                     if answer.len() > 200 {
-                        println!("Answer too long, cutting off: {}", &answer[200..])
+                        println!("Answer too long, cutting off...");
+                        answer = answer[0..200].to_string();
                     }
 
-                    // Limit the prompt so it does not take too long to generate the speech
-                    let generated_speech = tts.create(&answer[..200]);
+                    let generated_speech = tts.create(&answer);
                     system_audio.send_audio(&generated_speech);
                 }
                 vad.delete_speech_segment();
