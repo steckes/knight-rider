@@ -2,6 +2,8 @@
 
 <img src="img/pic1.jpg" alt="Knight Rider Demo" width="400"> <img src="img/pic2.jpg" alt="Raspberry Pi Setup" width="400">
 
+https://github.com/user-attachments/assets/b75bbb86-f464-45c9-bde8-097b5ae7f3d3
+
 This is the code for a workshop that was given at RustConf 2025 in Seattle with the name "Rust at The Edge: AI Development, Edge Deployment, Real World Inference".
 It provides reference code that allows you to have voice conversations with an LLM.
 
