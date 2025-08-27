@@ -76,11 +76,11 @@ fn main() -> Result<(), Box<dyn Error>> {
 
                     // Limit the prompt so it does not take too long to generate the speech
                     if answer.len() > 200 {
-                        println!("Answer too long, cutting off...");
+                        println!("\nWarning: Answer too long, cutting off end...");
                         answer = answer[0..200].to_string();
                     }
 
-                    // Remove asterixes from answer
+                    // Remove asterixes from answer, so it doesn't say it all the time
                     answer = answer.replace('*', "");
 
                     let generated_speech = tts.create(&answer);
