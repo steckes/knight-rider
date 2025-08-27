@@ -22,6 +22,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut stt = SpeechToText::new_moonshine()?;
     let mut tts = TextToSpeech::new_matcha(0);
 
+    // ai-coustics Speech Enhancement
+    let license_key =
+        std::env::var("AIC_SDK_LICENSE").expect("AIC_SDK_LICENSE environment variable not set");
+    let mut aic = aic_sdk::Model::new(aic_sdk::ModelType::QuailL16, &license_key)?;
+    aic.initialize(vad.sample_rate(), 1, vad.window_size())?;
+
     let audio_config = AudioConfig {
         input_device: None,  // None = default
         output_device: None, // None = default
@@ -50,7 +56,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     // Main AI Loop
     loop {
         if system_audio.num_samples_available() >= vad.window_size() {
-            let input_audio = system_audio.receive_audio(vad.window_size());
+            let mut input_audio = system_audio.receive_audio(vad.window_size());
+
+            aic.process_planar(&mut [&mut input_audio])?;
 
             vad.process_audio(input_audio);
 
