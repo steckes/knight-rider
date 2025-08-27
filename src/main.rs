@@ -80,15 +80,9 @@ fn main() -> Result<(), Box<dyn Error>> {
                         answer = answer[0..200].to_string();
                     }
 
-                    // Remove symbols that should not be said
-                    answer = answer
-                        .chars()
-                        .filter(|c| {
-                            c.is_alphanumeric()
-                                || c.is_whitespace()
-                                || matches!(c, '.' | '?' | '!' | ',' | ':' | ';')
-                        })
-                        .collect();
+                    // Remove asterixes from answer
+                    answer = answer.replace('*', "");
+
                     let generated_speech = tts.create(&answer);
 
                     system_audio.send_audio(&generated_speech);
