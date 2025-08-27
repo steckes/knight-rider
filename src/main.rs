@@ -80,13 +80,13 @@ fn main() -> Result<(), Box<dyn Error>> {
                         answer = answer[0..200].to_string();
                     }
 
-                    // Remove special symbols except `.` `?` `!` `,`
+                    // Remove symbols that should not be said
                     answer = answer
                         .chars()
                         .filter(|c| {
                             c.is_alphanumeric()
                                 || c.is_whitespace()
-                                || matches!(c, '.' | '?' | '!' | ',')
+                                || matches!(c, '.' | '?' | '!' | ',' | ':' | ';')
                         })
                         .collect();
                     let generated_speech = tts.create(&answer);
