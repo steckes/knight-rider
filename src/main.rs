@@ -80,7 +80,17 @@ fn main() -> Result<(), Box<dyn Error>> {
                         answer = answer[0..200].to_string();
                     }
 
+                    // Remove special symbols except `.` `?` `!` `,`
+                    answer = answer
+                        .chars()
+                        .filter(|c| {
+                            c.is_alphanumeric()
+                                || c.is_whitespace()
+                                || matches!(c, '.' | '?' | '!' | ',')
+                        })
+                        .collect();
                     let generated_speech = tts.create(&answer);
+
                     system_audio.send_audio(&generated_speech);
                 }
                 vad.delete_speech_segment();
